@@ -85,36 +85,25 @@ async function sendEmailWithDivContent(divHtml) {
   }
 }
 
-// cron.schedule(
-//   "0 8,10,12,13,15,17,42 18,20 * * *",
-//   async () => {
-//     console.log("Running task to fetch div and send email...");
+cron.schedule(
+  "0 8,10,12,13,15,17,18,19,20 * * *",
+  async () => {
+    console.log("Running task to fetch div and send email...");
+    const divContent = await fetchAndExtractDiv();
 
-//     const divContent = await fetchAndExtractDiv();
-
-// if (divContent) {
-//   await sendEmailWithDivContent(divContent);
-// } else {
-//   console.log("No content found or an error occurred.");
-//     }
-//   },
-//   {
-//     scheduled: true,
-//     timezone: "Europe/Sarajevo",
-//   }
-// );
+    if (divContent) {
+      await sendEmailWithDivContent(divContent);
+    } else {
+      console.log("No content found or an error occurred.");
+    }
+  },
+  {
+    scheduled: true,
+    timezone: "Europe/Sarajevo",
+  }
+);
 
 const PORT = 3000;
 app.listen(PORT, async () => {
-  const divContent = await fetchAndExtractDiv();
-  if (divContent) {
-    //console.log("divContent", divContent);
-    await sendEmailWithDivContent(divContent);
-  } else {
-    console.log("No content found or an error occurred.");
-  }
-
-  // console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
-
-//https://www.izbori.ba/?Lang=3&CategoryID=64
